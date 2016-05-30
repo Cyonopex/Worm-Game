@@ -24,7 +24,7 @@ public class UserInterface implements Runnable {
 	@Override
 	public void run() {
 		frame = new JFrame("Snake");
-		frame.setPreferredSize(new Dimension(pieceLength * (game.getBoardLength()+1), pieceLength * (game.getBoardHeight()+2)));
+		//frame.setPreferredSize(new Dimension(pieceLength * (game.getBoardLength()+1), pieceLength * (game.getBoardHeight()+2)));
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 		createComponents(frame.getContentPane());
@@ -36,6 +36,7 @@ public class UserInterface implements Runnable {
 
 	private void createComponents(Container container) {
 		board = new DrawingBoard(game, pieceLength);
+		board.setPreferredSize(new Dimension(pieceLength * (game.getBoardLength()), pieceLength * game.getBoardHeight()));
 		frame.addKeyListener(new KeyboardListener(game));
 		container.add(board);
 	}
