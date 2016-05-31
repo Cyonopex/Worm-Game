@@ -29,7 +29,7 @@ public class DrawingBoard extends JPanel {
 		Worm worm = game.getWorm();
 		
 		Color snakeColor;
-		if(!game.isGameOver()) {
+		if(!game.isGameOver() || game.firstGame()) {
 			snakeColor = new Color(113, 188, 201);
 		} else {
 			snakeColor = new Color(226, 29, 29);

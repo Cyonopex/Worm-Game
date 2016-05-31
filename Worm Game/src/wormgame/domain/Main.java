@@ -20,7 +20,7 @@ public class Main {
         }
 		
 		game.setComponent(ui.getUpdatable());
-		game.start();
+		//game.start();
 
 	}
 }

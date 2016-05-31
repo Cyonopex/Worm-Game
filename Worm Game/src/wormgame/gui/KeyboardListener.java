@@ -19,8 +19,26 @@ public class KeyboardListener implements KeyListener {
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
+		
+		if(game.isGameOver()) {
+			
+			if (!game.firstGame()) {
+				game.resetGame();
+			}
+			this.worm = game.getWorm();
+			if(e.getKeyCode() == KeyEvent.VK_UP) {
+				worm.forceSetDirection(Direction.UP);
+			} else if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+				worm.forceSetDirection(Direction.DOWN);
+			} else if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+				worm.forceSetDirection(Direction.LEFT);
+			} else if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+				worm.forceSetDirection(Direction.RIGHT);
+			}
+			game.start();
 
-		if(!game.isGameOver()) {
+		} else {
+			
 			if(e.getKeyCode() == KeyEvent.VK_UP) {
 				worm.setKeypress(Direction.UP);
 			} else if(e.getKeyCode() == KeyEvent.VK_DOWN) {
@@ -30,11 +48,6 @@ public class KeyboardListener implements KeyListener {
 			} else if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
 				worm.setKeypress(Direction.RIGHT);
 			}
-		
-		} else {
-			game.resetGame();
-			this.worm = game.getWorm();
-			game.start();
 		}
 	}
 

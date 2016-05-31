@@ -85,6 +85,10 @@ public class Worm {
 		if(!finalDirection.isOpposite(direction)) direction = finalDirection;
 	}
 	
+	public void forceSetDirection(Direction dir) {
+		this.direction = dir;
+	}
+	
 	public int getLength() {
 		return listOfPieces.size();
 	}

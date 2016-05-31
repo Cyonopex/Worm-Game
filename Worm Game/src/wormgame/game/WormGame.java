@@ -17,12 +17,15 @@ public class WormGame implements Runnable {
 	private boolean gameRunning;
 	private Thread runThread;
 	private boolean endlessScreen;
+	private boolean firstGame;
 	private Component drawingboard;
 	
 	public WormGame(int boardLength, int boardHeight, boolean wrapsAround) {
 		this.boardLength = boardLength;
 		this.boardHeight = boardHeight;
 		this.endlessScreen = wrapsAround;
+		this.firstGame = true;
+		this.gameRunning = false;
 		
 		resetGame();
 	}
@@ -49,6 +52,10 @@ public class WormGame implements Runnable {
 	
 	public void setApple(Apple apple) {
 		this.apple = apple;
+	}
+	
+	public boolean firstGame() {
+		return firstGame;
 	}
 	
 	private void makeNewApple() {
@@ -107,8 +114,9 @@ public class WormGame implements Runnable {
 	}
 	
 	public void start() {
-
-
+		
+		firstGame = false;
+		gameRunning = true;
 		runThread = new Thread(this);
 		runThread.start();
 
@@ -120,7 +128,7 @@ public class WormGame implements Runnable {
 	
 	public void resetGame() {
 		
-		gameRunning = true;
+		//gameRunning = true;
 		
 		worm = new Worm(boardLength/2, boardHeight/2, Direction.DOWN, endlessScreen, boardLength, boardHeight);
 		
