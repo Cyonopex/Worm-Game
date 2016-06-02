@@ -20,9 +20,9 @@ public class KeyboardListener implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		
-		if(game.isGameOver()) {
+		if(game.isGameOver() && game.canStartNewGame()) {
 			
-			if (!game.firstGame()) {
+			if (!game.firstGame()) { //game has already been initialised if it's first game
 				game.resetGame();
 			}
 			this.worm = game.getWorm();

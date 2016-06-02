@@ -11,16 +11,15 @@ public class Main {
 		UserInterface ui = new UserInterface(game, 20);
 		SwingUtilities.invokeLater(ui);
 		
-        while (ui.getUpdatable() == null) {
+        while (ui.getDrawingBoard() == null || ui.getScoreBoard() == null) {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException ex) {
-                System.out.println("The drawing board hasn't been created yet.");
+                System.out.println("The drawing board or score boardhasn't been created yet.");
             }
         }
 		
-		game.setComponent(ui.getUpdatable());
-		//game.start();
-
+		game.setDrawingBoard(ui.getDrawingBoard());
+		game.setScoreBoard(ui.getScoreBoard());
 	}
 }

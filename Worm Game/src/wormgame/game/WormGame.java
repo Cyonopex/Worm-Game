@@ -7,6 +7,8 @@ import java.util.Random;
 import wormgame.Direction;
 import wormgame.domain.Apple;
 import wormgame.domain.Worm;
+import wormgame.gui.DrawingBoard;
+import wormgame.gui.ScoreBoard;
 
 public class WormGame implements Runnable {
 	
@@ -18,7 +20,10 @@ public class WormGame implements Runnable {
 	private Thread runThread;
 	private boolean endlessScreen;
 	private boolean firstGame;
-	private Component drawingboard;
+	private boolean canStartNewGame;
+	private DrawingBoard drawingboard;
+	private ScoreBoard scoreBoard;
+	private static final int NEW_GAME_DELAY_TIME = 500;
 	
 	public WormGame(int boardLength, int boardHeight, boolean wrapsAround) {
 		this.boardLength = boardLength;
@@ -26,7 +31,7 @@ public class WormGame implements Runnable {
 		this.endlessScreen = wrapsAround;
 		this.firstGame = true;
 		this.gameRunning = false;
-		
+		this.canStartNewGame = true;
 		resetGame();
 	}
 	
@@ -58,6 +63,14 @@ public class WormGame implements Runnable {
 		return firstGame;
 	}
 	
+	public void setDrawingBoard(DrawingBoard db) {
+		this.drawingboard = db;
+	}
+	
+	public void setScoreBoard(ScoreBoard sb) {
+		this.scoreBoard = sb;
+	}
+	
 	private void makeNewApple() {
 		int appleX, appleY;
 		do {
@@ -68,10 +81,6 @@ public class WormGame implements Runnable {
 
 	}
 	
-	public void updateBoard() {
-
-	}
-
 	@Override
 	public void run() {
 		while(gameRunning) {
@@ -90,6 +99,7 @@ public class WormGame implements Runnable {
 			if(worm.runsInto(apple)) {
 				worm.grow();
 				this.makeNewApple();
+				scoreBoard.incrementScore();
 			}
 			
 			if(worm.runsIntoItself() ) {
@@ -103,18 +113,21 @@ public class WormGame implements Runnable {
 
 			drawingboard.repaint();
 		}
-	}
-	
-	public void setComponent(Component component) {
-		this.drawingboard = component;
-	}
-	
-	public Component getComponent() {
-		return drawingboard;
+		
+		//when game ends, block input for 0.5 second (to prevent user from accidentally starting a new game first)
+		//0.5 seconds seems to be about right such that user won't notice delay in starting new game
+		try {
+			Thread.sleep(NEW_GAME_DELAY_TIME); 
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		canStartNewGame = true;
+		
 	}
 	
 	public void start() {
 		
+		canStartNewGame = false;
 		firstGame = false;
 		gameRunning = true;
 		runThread = new Thread(this);
@@ -126,9 +139,11 @@ public class WormGame implements Runnable {
 		return !gameRunning;
 	}
 	
+	public boolean canStartNewGame() {
+		return canStartNewGame;
+	}
+	
 	public void resetGame() {
-		
-		//gameRunning = true;
 		
 		worm = new Worm(boardLength/2, boardHeight/2, Direction.DOWN, endlessScreen, boardLength, boardHeight);
 		
@@ -142,5 +157,9 @@ public class WormGame implements Runnable {
 			appleY = random.nextInt(boardHeight);
 		} while (appleX == boardLength/2 && appleY == boardHeight/2);
 		apple = new Apple(appleX, appleY);
+		
+		if(!firstGame) {
+			scoreBoard.resetScore();
+		}
 	}
 }
