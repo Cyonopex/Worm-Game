@@ -1,7 +1,5 @@
 package wormgame.game;
 
-import java.awt.Component;
-
 import java.util.Random;
 
 import wormgame.Direction;

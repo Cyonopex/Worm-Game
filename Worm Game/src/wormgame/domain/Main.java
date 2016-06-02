@@ -15,7 +15,7 @@ public class Main {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException ex) {
-                System.out.println("The drawing board or score boardhasn't been created yet.");
+                System.out.println("The drawing board or score board hasn't been created yet.");
             }
         }
 		
