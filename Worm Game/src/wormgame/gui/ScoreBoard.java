@@ -28,7 +28,7 @@ public class ScoreBoard extends JPanel{
 		currentScore = score;
 		if(currentScore > 999) {
 			currentScore = 999;
-		} else if(currentScore >0) {
+		} else if(currentScore <0) {
 			currentScore = 0;
 		}
 	}

@@ -10,23 +10,27 @@ import wormgame.gui.ScoreBoard;
 
 public class WormGame implements Runnable {
 	
-	private int boardLength, boardHeight;
 	private Random random;
 	private Worm worm;
 	private Apple apple;
-	private boolean gameRunning;
+	
 	private Thread runThread;
-	private boolean endlessScreen;
+	
+	private int boardLength, boardHeight;
+	private boolean gameRunning;
+	private boolean wrapsAround;
 	private boolean firstGame;
 	private boolean canStartNewGame;
+	
 	private DrawingBoard drawingboard;
 	private ScoreBoard scoreBoard;
+	
 	private static final int NEW_GAME_DELAY_TIME = 500;
 	
 	public WormGame(int boardLength, int boardHeight, boolean wrapsAround) {
 		this.boardLength = boardLength;
 		this.boardHeight = boardHeight;
-		this.endlessScreen = wrapsAround;
+		this.wrapsAround = wrapsAround;
 		this.firstGame = true;
 		this.gameRunning = false;
 		this.canStartNewGame = true;
@@ -59,6 +63,14 @@ public class WormGame implements Runnable {
 	
 	public boolean firstGame() {
 		return firstGame;
+	}
+	
+	public boolean isGameOver() {
+		return !gameRunning;
+	}
+	
+	public boolean canStartNewGame() {
+		return canStartNewGame;
 	}
 	
 	public void setDrawingBoard(DrawingBoard db) {
@@ -104,7 +116,7 @@ public class WormGame implements Runnable {
 				gameRunning = false;
 			}
 			
-			if(!endlessScreen && worm.leavesBoundary()) {
+			if(!wrapsAround && worm.leavesBoundary()) {
 				gameRunning = false;
 			}
 
@@ -125,7 +137,7 @@ public class WormGame implements Runnable {
 	
 	public void start() {
 		
-		canStartNewGame = false;
+		canStartNewGame = false; //once game is started, don't start a new game until game over
 		firstGame = false;
 		gameRunning = true;
 		runThread = new Thread(this);
@@ -133,17 +145,9 @@ public class WormGame implements Runnable {
 
 	}
 	
-	public boolean isGameOver() {
-		return !gameRunning;
-	}
-	
-	public boolean canStartNewGame() {
-		return canStartNewGame;
-	}
-	
 	public void resetGame() {
 		
-		worm = new Worm(boardLength/2, boardHeight/2, Direction.DOWN, endlessScreen, boardLength, boardHeight);
+		worm = new Worm(boardLength/2, boardHeight/2, Direction.DOWN, wrapsAround, boardLength, boardHeight);
 		
 		random = new Random();
 		

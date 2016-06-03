@@ -4,7 +4,7 @@ import wormgame.Direction;
 
 public class KeypressTracker {
 	private boolean leftPressed, rightPressed, upPressed, downPressed;
-	private boolean leftRel, rightRel, upRel, downRel;
+	private boolean leftRel, rightRel, upRel, downRel; //only called when key released; dirPressed will be set to false upon release()
 	
 	public KeypressTracker() {
 		resetPressed();

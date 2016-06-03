@@ -11,15 +11,15 @@ public class Worm {
 	private List<Piece> listOfPieces;
 	private boolean growOnNextTurn;
 	private KeypressTracker tracker;
-	private boolean endlessScreen;
+	private boolean wrapsAround;
 	int boardLength, boardHeight;
 	
 	public Worm(int originalX, int originalY, Direction originalDirection, boolean wrapsAround, int boardLength, int boardHeight) {
 		this.direction = originalDirection;
-		tracker = new KeypressTracker();
-		endlessScreen = wrapsAround;
+		this.wrapsAround = wrapsAround;
 		this.boardLength = boardLength;
 		this.boardHeight = boardHeight;
+		tracker = new KeypressTracker();
 		
 		listOfPieces = new ArrayList<Piece>();
 		
@@ -30,7 +30,7 @@ public class Worm {
 		return direction;
 	}
 	
-	public void setKeypress(Direction dir) {
+	public void setKeypress(Direction dir) { 
 		tracker.setPressed(dir);
 	}
 	
@@ -85,7 +85,7 @@ public class Worm {
 		if(!finalDirection.isOpposite(direction)) direction = finalDirection;
 	}
 	
-	public void forceSetDirection(Direction dir) {
+	public void forceSetDirection(Direction dir) { //bypass keypress tracker and force worm to move in input direction
 		this.direction = dir;
 	}
 	
@@ -105,7 +105,7 @@ public class Worm {
 		//get coordinates for head of worm
 		Piece head = listOfPieces.get(listOfPieces.size()-1);
 		
-		if (endlessScreen) {
+		if (wrapsAround) {
 			//add piece at head of worm
 			switch (direction) {
 			case LEFT:
@@ -154,7 +154,7 @@ public class Worm {
 			}
 		}
 		//if worm is smaller than 3, don't remove last piece (or if one of below conditions occur)
-		if(this.getLength() <= 3 || growOnNextTurn || runsIntoItself() || (!endlessScreen && leavesBoundary() )) {
+		if(this.getLength() <= 3 || growOnNextTurn || runsIntoItself() || (!wrapsAround && leavesBoundary() )) {
 			growOnNextTurn = false;
 		} else {
 			listOfPieces.remove(0);
