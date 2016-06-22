@@ -12,13 +12,15 @@ public class Worm {
 	private boolean growOnNextTurn;
 	private KeypressTracker tracker;
 	private boolean wrapsAround;
-	int boardLength, boardHeight;
+	private int boardLength, boardHeight;
+	private boolean gameOver;
 	
 	public Worm(int originalX, int originalY, Direction originalDirection, boolean wrapsAround, int boardLength, int boardHeight) {
 		this.direction = originalDirection;
 		this.wrapsAround = wrapsAround;
 		this.boardLength = boardLength;
 		this.boardHeight = boardHeight;
+		this.gameOver = false;
 		tracker = new KeypressTracker();
 		
 		listOfPieces = new ArrayList<Piece>();
@@ -159,6 +161,11 @@ public class Worm {
 		} else {
 			listOfPieces.remove(0);
 		}
+		if (runsIntoItself() || leavesBoundary()) {
+			//if worm ran into itself, remove head piece;
+			listOfPieces.remove(listOfPieces.size() - 1);
+			this.gameOver = true;
+		}
 		
 	}
 	
@@ -175,7 +182,7 @@ public class Worm {
 		return false;
 	}
 	
-	public boolean runsIntoItself() {
+	private boolean runsIntoItself() {
 		
 		Piece head = listOfPieces.get(listOfPieces.size()-1);
 		int headXCoordinate = head.getX();
@@ -187,6 +194,10 @@ public class Worm {
 		}
 		
 		return false;
+	}
+	
+	public boolean gameOver() {
+		return gameOver;
 	}
 	
 	public boolean leavesBoundary() {

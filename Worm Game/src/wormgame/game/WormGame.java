@@ -112,7 +112,7 @@ public class WormGame implements Runnable {
 				scoreBoard.incrementScore();
 			}
 			
-			if(worm.runsIntoItself() ) {
+			if(worm.gameOver() ) {
 				gameRunning = false;
 			}
 			

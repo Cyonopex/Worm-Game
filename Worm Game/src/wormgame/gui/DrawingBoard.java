@@ -2,6 +2,7 @@ package wormgame.gui;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JPanel;
@@ -28,18 +29,27 @@ public class DrawingBoard extends JPanel {
 		super.paintComponent(graphics);
 		Worm worm = game.getWorm();
 		
-		Color snakeColor;
+		Color snakeColor, snakeHeadColor;
 		if(!game.isGameOver() || game.firstGame()) {
 			snakeColor = new Color(113, 188, 201);
+			snakeHeadColor = new Color(63, 151, 167);
 		} else {
 			snakeColor = new Color(226, 29, 29);
+			snakeHeadColor = new Color(141, 18, 18);
 		}
 		
 		graphics.setColor(snakeColor);
+		
 		List<Piece> wormPieces = worm.getPieces();
-		for(Piece piece : wormPieces) {
+		Iterator<Piece> snakePieceIterator = wormPieces.iterator();
+		while(snakePieceIterator.hasNext()) {
+			Piece piece = snakePieceIterator.next();
+			if(!snakePieceIterator.hasNext()) {
+				graphics.setColor(snakeHeadColor);
+			}
 			graphics.fillRect(piece.getX()*pieceLength, piece.getY()*pieceLength, pieceLength, pieceLength);
 		}
+
 		
 		Color appleColor = new Color(51, 213, 42);
 		graphics.setColor(appleColor);
