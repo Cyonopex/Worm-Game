@@ -18,7 +18,7 @@ public class WormGame implements Runnable {
 	
 	private int boardLength, boardHeight;
 	private boolean gameRunning;
-	private boolean wrapsAround;
+	private boolean wrapAroundMode;
 	private boolean firstGame;
 	private boolean canStartNewGame;
 	
@@ -30,7 +30,7 @@ public class WormGame implements Runnable {
 	public WormGame(int boardLength, int boardHeight, boolean wrapsAround) {
 		this.boardLength = boardLength;
 		this.boardHeight = boardHeight;
-		this.wrapsAround = wrapsAround;
+		this.wrapAroundMode = wrapsAround;
 		this.firstGame = true;
 		this.gameRunning = false;
 		this.canStartNewGame = true;
@@ -91,6 +91,12 @@ public class WormGame implements Runnable {
 
 	}
 	
+	public void toggleWrapAroundMode() {
+		wrapAroundMode = !wrapAroundMode;
+		worm.toggleWrapAroundMode();
+		drawingboard.changeMode(wrapAroundMode);
+	}
+	
 	@Override
 	public void run() {
 		while(gameRunning) {
@@ -116,7 +122,7 @@ public class WormGame implements Runnable {
 				gameRunning = false;
 			}
 			
-			if(!wrapsAround && worm.leavesBoundary()) {
+			if(!wrapAroundMode && worm.leavesBoundary()) {
 				gameRunning = false;
 			}
 
@@ -147,7 +153,7 @@ public class WormGame implements Runnable {
 	
 	public void resetGame() {
 		
-		worm = new Worm(boardLength/2, boardHeight/2, Direction.DOWN, wrapsAround, boardLength, boardHeight);
+		worm = new Worm(boardLength/2, boardHeight/2, Direction.DOWN, wrapAroundMode, boardLength, boardHeight);
 		
 		random = new Random();
 		

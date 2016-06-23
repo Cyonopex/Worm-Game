@@ -11,13 +11,13 @@ public class Worm {
 	private List<Piece> listOfPieces;
 	private boolean growOnNextTurn;
 	private KeypressTracker tracker;
-	private boolean wrapsAround;
+	private boolean wrapAroundMode;
 	private int boardLength, boardHeight;
 	private boolean gameOver;
 	
 	public Worm(int originalX, int originalY, Direction originalDirection, boolean wrapsAround, int boardLength, int boardHeight) {
 		this.direction = originalDirection;
-		this.wrapsAround = wrapsAround;
+		this.wrapAroundMode = wrapsAround;
 		this.boardLength = boardLength;
 		this.boardHeight = boardHeight;
 		this.gameOver = false;
@@ -99,6 +99,10 @@ public class Worm {
 		return listOfPieces;
 	}
 	
+	public void toggleWrapAroundMode() {
+		this.wrapAroundMode = !wrapAroundMode;
+	}
+	
 	public void move() {
 		
 		setDirection();
@@ -107,7 +111,7 @@ public class Worm {
 		//get coordinates for head of worm
 		Piece head = listOfPieces.get(listOfPieces.size()-1);
 		
-		if (wrapsAround) {
+		if (wrapAroundMode) {
 			//add piece at head of worm
 			switch (direction) {
 			case LEFT:
@@ -156,7 +160,7 @@ public class Worm {
 			}
 		}
 		//if worm is smaller than 3, don't remove last piece (or if one of below conditions occur)
-		if(this.getLength() <= 3 || growOnNextTurn || runsIntoItself() || (!wrapsAround && leavesBoundary() )) {
+		if(this.getLength() <= 3 || growOnNextTurn || runsIntoItself() || (!wrapAroundMode && leavesBoundary() )) {
 			growOnNextTurn = false;
 		} else {
 			listOfPieces.remove(0);

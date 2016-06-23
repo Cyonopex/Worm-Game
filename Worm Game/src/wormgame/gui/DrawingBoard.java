@@ -24,6 +24,14 @@ public class DrawingBoard extends JPanel {
 		setBackground(new Color(26, 36, 50));
 	}
 	
+	public void changeMode(boolean wrapAroundMode) {
+		if(wrapAroundMode) {
+			setBackground(new Color(26, 50, 32));
+		} else {
+			setBackground(new Color(26, 36, 50));
+		}
+	}
+	
 	@Override
 	public void paintComponent(Graphics graphics) {
 		super.paintComponent(graphics);
@@ -37,7 +45,7 @@ public class DrawingBoard extends JPanel {
 			snakeColor = new Color(226, 29, 29);
 			snakeHeadColor = new Color(141, 18, 18);
 		}
-		
+		new Color(26, 50, 32);
 		graphics.setColor(snakeColor);
 		
 		List<Piece> wormPieces = worm.getPieces();
